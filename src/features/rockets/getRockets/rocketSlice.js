@@ -20,6 +20,10 @@ const rocketSlice = createSlice({
     setError: (state, { payload }) => {
       state.error = payload;
     },
+
+    searchRockets: (state, { payload }) => {
+      state.rockets = payload;
+    },
   },
 });
 
