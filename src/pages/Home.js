@@ -9,12 +9,13 @@ import { fetchRockets } from "../features/rockets/getRockets/rocketActions";
 
 function Home() {
   const rocketlist = useSelector((state) => state.getRocket);
-  const { loading, error, rockets } = rocketlist;
+  const { loading, error, rockets, searchResults } = rocketlist;
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchRockets());
     setPageLoading(false);
-  }, [dispatch]);
+  }, [dispatch, fetchRockets]);
 
   //pagnation
 
@@ -26,8 +27,13 @@ function Home() {
   const indexOfLastPost = currentPage * postsPerPage; // 10 20
   const indexOfFirstPost = indexOfLastPost - postsPerPage; // 0 10
   // (0,10) (10,20)
-  const currentPosts = rockets.slice(indexOfFirstPost, indexOfLastPost);
 
+  const currentPosts =
+    !searchResults.length > 0
+      ? rockets.slice(indexOfFirstPost, indexOfLastPost)
+      : searchResults.slice(indexOfFirstPost, indexOfLastPost);
+
+  console.log(currentPosts);
   const paginate = (num) => {
     setCurrentPage(num);
   };
@@ -51,7 +57,7 @@ function Home() {
         <Row>
           <Col md={3}>Filters</Col>
           <Col md={9}>
-            <SearchBar />
+            <SearchBar rocketlist={rocketlist.rockets} />
             <div className="d-flex flex-wrap gap-4">
               {currentPosts.map((item, keys) => {
                 return (
@@ -93,7 +99,11 @@ function Home() {
             </div>
             <Paginate
               postsPerPage={postsPerPage}
-              totalPosts={rockets.length}
+              totalPosts={
+                !searchResults.length > 0
+                  ? rockets.length
+                  : searchResults.length
+              }
               paginate={paginate}
               nextPage={nextPage}
               prevPage={prevPage}

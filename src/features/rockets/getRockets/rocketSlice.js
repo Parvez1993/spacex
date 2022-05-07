@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   error: false,
   rockets: [],
+  searchResults: [],
 };
 const rocketSlice = createSlice({
   name: "rockets",
@@ -21,14 +22,15 @@ const rocketSlice = createSlice({
       state.error = payload;
     },
 
-    searchRockets: (state, { payload }) => {
-      state.rockets = payload;
+    searchRocketsList: (state, { payload }) => {
+      state.searchResults = payload;
     },
   },
 });
 
 // export the actions
-export const { setLoading, setRockets, setError } = rocketSlice.actions;
+export const { setLoading, setRockets, setError, searchRocketsList } =
+  rocketSlice.actions;
 
 // export the selector (".items" being same as in slices/index.js's "items: something")
 
