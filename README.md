@@ -9,8 +9,8 @@ In the project directory, you can run:
 ### `npm dependencies`
 
 1. react-bootstrap bootstrap
-2. react-redux
-3.
+2. react-redux, @reduxjs/toolkit
+3. react-router-dom v6
 
 ### `How to run the code`
 
