@@ -8,8 +8,9 @@ In the project directory, you can run:
 
 ### `npm dependencies`
 
-1. react-bootstrap
-2.
+1. react-bootstrap bootstrap
+2. react-redux
+3.
 
 ### `How to run the code`
 
