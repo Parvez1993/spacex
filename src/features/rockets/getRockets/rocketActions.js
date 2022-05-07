@@ -1,23 +1,16 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import {
-  getRocketBegin,
-  getRocketError,
-  getRocketSuccess,
-} from "./rocketSlice";
+import { setError, setRockets } from "./rocketSlice";
 
-export const getRockets = createAsyncThunk(
-  "rockets/getRockets",
-  async (dispatch, getState) => {
-    try {
-      dispatch(getRocketBegin());
-      const { data } = await axios.get(
-        "https://api.spacexdata.com/v3/launches"
-      );
-
-      dispatch(getRocketSuccess(data));
-    } catch (error) {
-      dispatch(getRocketError(error));
-    }
-  }
-);
+// fetch all items
+export function fetchRockets() {
+  return async (dispatch) => {
+    axios
+      .get("https://api.spacexdata.com/v3/launches")
+      .then((response) => {
+        dispatch(setRockets(response.data));
+      })
+      .catch((err) => {
+        dispatch(setError(err.message));
+      });
+  };
+}

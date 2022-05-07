@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   loading: false,
@@ -9,22 +9,24 @@ const rocketSlice = createSlice({
   name: "rockets",
   initialState,
   reducers: {
-    getRocketBegin: (state) => {
+    setLoading: (state) => {
       state.loading = true;
     },
-    getRocketSuccess: (state, { payload }) => {
+    setRockets: (state, { payload }) => {
       state.loading = false;
       state.error = false;
       state.rockets = payload;
     },
-    getRocketError: (state) => {
-      state.loading = false;
-      state.error = true;
+    setError: (state, { payload }) => {
+      state.error = payload;
     },
   },
 });
 
-export const { getRocketBegin, getRocketSuccess, getRocketError } =
-  rocketSlice.actions;
+// export the actions
+export const { setLoading, setRockets, setError } = rocketSlice.actions;
 
+// export the selector (".items" being same as in slices/index.js's "items: something")
+
+// export the default reducer
 export default rocketSlice.reducer;
