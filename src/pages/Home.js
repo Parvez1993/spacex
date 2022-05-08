@@ -12,9 +12,9 @@ import moment from "moment";
 
 function Home() {
   const rocketlist = useSelector((state) => state.getRocket);
-  const { loading, error, searchResults } = rocketlist;
+  const { loading, error, searchResults, filteredResults } = rocketlist;
 
-  console.log("search results", searchResults);
+  //displaydata
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -102,6 +102,16 @@ function Home() {
                           <span className="">
                             Launch Year:{" "}
                             {moment(item.launch_date_local).format("MMM Do YY")}
+                          </span>
+                        </p>
+                        <p>
+                          <span className="">
+                            Launch Status:{" "}
+                            {item.launch_success === null
+                              ? "Unknown"
+                              : item.launch_success
+                              ? "Success"
+                              : "Failure"}
                           </span>
                         </p>
                       </div>

@@ -6,6 +6,9 @@ const initialState = {
   rockets: [],
   searchResults: [],
   date: "all",
+  filteredResults: [],
+  setLaunchStatus: "All",
+  launchResults: [],
 };
 const rocketSlice = createSlice({
   name: "rockets",
@@ -31,6 +34,15 @@ const rocketSlice = createSlice({
       state.date = payload;
     },
     filterRocketbyDate: (state, { payload }) => {
+      state.filteredResults = payload;
+      state.searchResults = payload;
+    },
+
+    setLaunchStatus: (state, { payload }) => {
+      state.setLaunchStatus = payload;
+    },
+    filterLaunchStatus: (state, { payload }) => {
+      state.launchResults = payload;
       state.searchResults = payload;
     },
   },
@@ -44,6 +56,8 @@ export const {
   searchRocketsList,
   setDateType,
   filterRocketbyDate,
+  setLaunchStatus,
+  filterLaunchStatus,
 } = rocketSlice.actions;
 
 // export the selector (".items" being same as in slices/index.js's "items: something")

@@ -3,7 +3,7 @@ import { Form, FormControl, Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { searchRockets } from "../features/rockets/getRockets/rocketActions";
 
-function SearchBar({ rocketlist }) {
+function SearchBar() {
   const [reload, setReload] = useState(false);
 
   const dispatch = useDispatch();
