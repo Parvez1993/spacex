@@ -44,7 +44,7 @@ export function searchRockets(letters) {
 
 export function filterRocketsbyTime(dateValue) {
   return async (dispatch, getState) => {
-    let { searchResults } = getState().getRocket;
+    let { rockets } = getState().getRocket;
     // get the latest launch date since we have date till 2020
     dispatch(setDateType(dateValue));
     let tempDate;
@@ -57,15 +57,30 @@ export function filterRocketsbyTime(dateValue) {
         dispatch(setError(err.message));
       });
 
+    console.log(rockets);
+
     let latestDate = moment(tempDate.launch_date_local).format("MMM Do YY");
     let lastweekDate = moment(tempDate.launch_date_local).subtract(7, "days");
+    let lastMonth = moment(tempDate.launch_date_local).subtract(1, "month");
+    let lastYear = moment(tempDate.launch_date_local).subtract(1, "year");
     let tempData;
     if (dateValue === "last_week") {
-      tempData = searchResults.filter(
+      tempData = rockets.filter(
         (rocket) => moment(rocket.launch_date_local) >= lastweekDate
       );
-
-      dispatch(filterRocketbyDate(tempData));
+    } else if (dateValue === "last_month") {
+      tempData = rockets.filter(
+        (rocket) => moment(rocket.launch_date_local) >= lastMonth
+      );
+    } else if (dateValue === "last_year") {
+      tempData = rockets.filter(
+        (rocket) => moment(rocket.launch_date_local) >= lastYear
+      );
+    } else if (dateValue === "all") {
+      tempData = rockets;
+    } else {
+      return 0;
     }
+    dispatch(filterRocketbyDate(tempData));
   };
 }

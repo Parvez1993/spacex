@@ -8,6 +8,7 @@ import Paginate from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import { fetchRockets } from "../features/rockets/getRockets/rocketActions";
 import notFound from "../images/NotFound.jpg";
+import moment from "moment";
 
 function Home() {
   const rocketlist = useSelector((state) => state.getRocket);
@@ -99,7 +100,8 @@ function Home() {
                         </p>
                         <p>
                           <span className="">
-                            Launch Year: {item.launch_year}
+                            Launch Year:{" "}
+                            {moment(item.launch_date_local).format("MMM Do YY")}
                           </span>
                         </p>
                       </div>
