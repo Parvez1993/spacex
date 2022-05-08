@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   filterRocketsbyTime,
   getLaunchStatus,
+  getUpcoming,
 } from "../features/rockets/getRockets/rocketActions";
 
 function FilterSidebar() {
@@ -31,6 +32,7 @@ function FilterSidebar() {
     },
   ];
 
+  let [upcoming, setUpcoming] = useState(false);
   //launch date
   const handleDateChange = (e) => {
     e.preventDefault();
@@ -51,6 +53,16 @@ function FilterSidebar() {
       dispatch(getLaunchStatus(e.target.value, filteredResults));
     } else {
       dispatch(getLaunchStatus(e.target.value, rockets));
+    }
+  };
+
+  //upcoming
+
+  const handleUpcoming = (e) => {
+    if (e.target.checked) {
+      dispatch(getUpcoming(true));
+    } else {
+      dispatch(getUpcoming(false));
     }
   };
   return (
@@ -84,6 +96,16 @@ function FilterSidebar() {
           />
         );
       })}
+
+      <Form.Check
+        type="checkbox"
+        label="Upcoming"
+        onClick={(e) => {
+          setUpcoming(!upcoming);
+          handleUpcoming(e);
+        }}
+        defaultChecked={upcoming ? true : false}
+      />
     </div>
   );
 }

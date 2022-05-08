@@ -9,6 +9,8 @@ import {
   filterRocketbyDate,
   setLaunchStatus,
   filterLaunchStatus,
+  setUpcoming,
+  filterUpcoming,
 } from "./rocketSlice";
 
 // fetch all items
@@ -58,6 +60,7 @@ export function filterRocketsbyTime(dateValue, tempData) {
         dispatch(setError(err.message));
       });
 
+    console.log(moment(tempDate.launch_date_local).format("MMMM Do YYYY"));
     let lastweekDate = moment(tempDate.launch_date_local).subtract(7, "days");
     let lastMonth = moment(tempDate.launch_date_local).subtract(1, "month");
     let lastYear = moment(tempDate.launch_date_local).subtract(1, "year");
@@ -121,5 +124,24 @@ export function getLaunchStatus(status, tempData) {
     }
 
     dispatch(filterLaunchStatus(tempDataResults));
+  };
+}
+
+export function getUpcoming(upcoming) {
+  return async (dispatch, getState) => {
+    let { searchResults, date, setLaunchStatus, rockets } =
+      getState().getRocket;
+    let tempData;
+    dispatch(setUpcoming(upcoming));
+    if (upcoming === true) {
+      tempData = searchResults.filter((rocket) => rocket.upcoming === upcoming);
+    } else if (upcoming === false) {
+      if (date === "all" && setLaunchStatus === "All") {
+        tempData = rockets;
+      } else {
+        tempData = searchResults;
+      }
+    }
+    dispatch(filterUpcoming(tempData));
   };
 }
