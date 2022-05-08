@@ -5,6 +5,7 @@ const initialState = {
   error: false,
   rockets: [],
   searchResults: [],
+  launchStatus: "all",
 };
 const rocketSlice = createSlice({
   name: "rockets",
@@ -17,6 +18,7 @@ const rocketSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.rockets = payload;
+      state.searchResults = payload;
     },
     setError: (state, { payload }) => {
       state.error = payload;

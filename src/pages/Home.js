@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Col, Row, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Error from "../components/Error";
+import FilterSidebar from "../components/FilterSidebar";
 import Loader from "../components/Loader";
 import Paginate from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
@@ -9,7 +10,9 @@ import { fetchRockets } from "../features/rockets/getRockets/rocketActions";
 
 function Home() {
   const rocketlist = useSelector((state) => state.getRocket);
-  const { loading, error, rockets, searchResults } = rocketlist;
+  const { loading, error, searchResults } = rocketlist;
+
+  console.log("search results", searchResults);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -28,12 +31,8 @@ function Home() {
   const indexOfFirstPost = indexOfLastPost - postsPerPage; // 0 10
   // (0,10) (10,20)
 
-  const currentPosts =
-    !searchResults.length > 0
-      ? rockets.slice(indexOfFirstPost, indexOfLastPost)
-      : searchResults.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = searchResults.slice(indexOfFirstPost, indexOfLastPost);
 
-  console.log(currentPosts);
   const paginate = (num) => {
     setCurrentPage(num);
   };
@@ -55,7 +54,9 @@ function Home() {
         <Loader />
       ) : (
         <Row>
-          <Col md={3}>Filters</Col>
+          <Col md={3}>
+            <FilterSidebar />
+          </Col>
           <Col md={9}>
             <SearchBar rocketlist={rocketlist.rockets} />
             <div className="d-flex flex-wrap gap-4">
@@ -99,11 +100,7 @@ function Home() {
             </div>
             <Paginate
               postsPerPage={postsPerPage}
-              totalPosts={
-                !searchResults.length > 0
-                  ? rockets.length
-                  : searchResults.length
-              }
+              totalPosts={searchResults.length}
               paginate={paginate}
               nextPage={nextPage}
               prevPage={prevPage}

@@ -9,7 +9,7 @@ function SearchBar({ rocketlist }) {
   const dispatch = useDispatch();
   const handleSearch = (e) => {
     e.preventDefault();
-    dispatch(searchRockets(e.target.value));
+    dispatch(searchRockets(e.target.value.toLowerCase()));
     setReload(true);
   };
 
