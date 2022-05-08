@@ -11,6 +11,8 @@ import {
   filterLaunchStatus,
   setUpcoming,
   filterUpcoming,
+  setfilterType,
+  filterResults,
 } from "./rocketSlice";
 
 // fetch all items
@@ -43,105 +45,164 @@ export function searchRockets(letters) {
   };
 }
 
-export function filterRocketsbyTime(dateValue, tempData) {
-  return async (dispatch, getState) => {
-    let { setLaunchStatus, rockets, launchResults } = getState().getRocket;
-    // get the latest launch date since we have date till 2020
-    dispatch(setDateType(dateValue));
+// export function filterRocketsbyTime(dateValue, tempData) {
+//   return async (dispatch, getState) => {
+//     let { setLaunchStatus, rockets, launchResults } = getState().getRocket;
+//     // get the latest launch date since we have date till 2020
+//     dispatch(setDateType(dateValue));
 
-    console.log("hello", tempData);
+//     console.log("hello", tempData);
+//     let tempDate;
+
+//     // dispatch(setLoading());
+//     tempDate = await axios
+//       .get("https://api.spacexdata.com/v3/launches/next")
+//       .then((response) => response.data)
+//       .catch((err) => {
+//         dispatch(setError(err.message));
+//       });
+
+//     console.log(moment(tempDate.launch_date_local).format("MMMM Do YYYY"));
+//     let lastweekDate = moment(tempDate.launch_date_local).subtract(7, "days");
+//     let lastMonth = moment(tempDate.launch_date_local).subtract(1, "month");
+//     let lastYear = moment(tempDate.launch_date_local).subtract(1, "year");
+//     let tempDataResults = tempData;
+
+//     if (dateValue === "last_week") {
+//       tempDataResults = tempData.filter(
+//         (rocket) => moment(rocket.launch_date_local) >= lastweekDate
+//       );
+//     } else if (dateValue === "last_month") {
+//       tempDataResults = tempData.filter(
+//         (rocket) => moment(rocket.launch_date_local) >= lastMonth
+//       );
+//     } else if (dateValue === "last_year") {
+//       tempDataResults = tempData.filter(
+//         (rocket) => moment(rocket.launch_date_local) >= lastYear
+//       );
+//     } else if (dateValue === "all") {
+//       if (setLaunchStatus === "All") {
+//         console.log("i am here i think");
+//         tempDataResults = rockets;
+//       } else {
+//         tempDataResults = tempData;
+//       }
+//     } else {
+//       return 0;
+//     }
+//     dispatch(filterRocketbyDate(tempDataResults));
+//   };
+// }
+
+// export function getLaunchStatus(status, tempData) {
+//   return async (dispatch, getState) => {
+//     let { rockets, searchResults, date } = getState().getRocket;
+//     // get the latest launch date since we have date till 2020
+
+//     let tempDataResults = tempData;
+//     dispatch(setLaunchStatus(status));
+
+//     console.log(tempData);
+
+//     console.log(status);
+//     if (status === "All") {
+//       if (date === "all") {
+//         tempDataResults = rockets;
+//       } else {
+//         tempDataResults = tempData;
+//       }
+//     } else if (status === "Success") {
+//       console.log("i am here");
+//       tempDataResults = tempData.filter(
+//         (rocket) => rocket.launch_success === true
+//       );
+//       console.log(tempDataResults);
+//     } else if (status === "Failure") {
+//       tempDataResults = tempData.filter(
+//         (rocket) => rocket.launch_success === false
+//       );
+//     } else {
+//       return 0;
+//     }
+
+//     dispatch(filterLaunchStatus(tempDataResults));
+//   };
+// }
+
+// export function getUpcoming(upcoming) {
+//   return async (dispatch, getState) => {
+//     let { searchResults, date, setLaunchStatus, rockets } =
+//       getState().getRocket;
+//     let tempData;
+//     dispatch(setUpcoming(upcoming));
+//     if (upcoming === true) {
+//       tempData = searchResults.filter((rocket) => rocket.upcoming === upcoming);
+//     } else if (upcoming === false) {
+//       if (date === "all" && setLaunchStatus === "All") {
+//         tempData = rockets;
+//       } else {
+//         tempData = searchResults;
+//       }
+//     }
+//     dispatch(filterUpcoming(tempData));
+//   };
+// }
+
+export function updateFiltersTypes(name, value) {
+  return async (dispatch, getState) => {
+    let { filters, screenResults } = getState().getRocket;
+    dispatch(setfilterType({ ...filters, [name]: value }));
+  };
+}
+
+export function updateFilters() {
+  return async (dispatch, getState) => {
+    let { filters, rockets } = getState().getRocket;
+    let tempProducts = rockets;
+    const { date, launchStatus, upcoming } = filters;
     let tempDate;
+    if (date !== "all") {
+      tempDate = await axios
+        .get("https://api.spacexdata.com/v3/launches/next")
+        .then((response) => response.data)
+        .catch((err) => {
+          dispatch(setError(err.message));
+        });
+      let lastweekDate = moment(tempDate.launch_date_local).subtract(7, "days");
+      let lastMonth = moment(tempDate.launch_date_local).subtract(1, "month");
+      let lastYear = moment(tempDate.launch_date_local).subtract(1, "year");
 
-    // dispatch(setLoading());
-    tempDate = await axios
-      .get("https://api.spacexdata.com/v3/launches/next")
-      .then((response) => response.data)
-      .catch((err) => {
-        dispatch(setError(err.message));
-      });
-
-    console.log(moment(tempDate.launch_date_local).format("MMMM Do YYYY"));
-    let lastweekDate = moment(tempDate.launch_date_local).subtract(7, "days");
-    let lastMonth = moment(tempDate.launch_date_local).subtract(1, "month");
-    let lastYear = moment(tempDate.launch_date_local).subtract(1, "year");
-    let tempDataResults = tempData;
-
-    if (dateValue === "last_week") {
-      tempDataResults = tempData.filter(
-        (rocket) => moment(rocket.launch_date_local) >= lastweekDate
-      );
-    } else if (dateValue === "last_month") {
-      tempDataResults = tempData.filter(
-        (rocket) => moment(rocket.launch_date_local) >= lastMonth
-      );
-    } else if (dateValue === "last_year") {
-      tempDataResults = tempData.filter(
-        (rocket) => moment(rocket.launch_date_local) >= lastYear
-      );
-    } else if (dateValue === "all") {
-      if (setLaunchStatus === "All") {
-        console.log("i am here i think");
-        tempDataResults = rockets;
-      } else {
-        tempDataResults = tempData;
-      }
-    } else {
-      return 0;
-    }
-    dispatch(filterRocketbyDate(tempDataResults));
-  };
-}
-
-export function getLaunchStatus(status, tempData) {
-  return async (dispatch, getState) => {
-    let { rockets, searchResults, date } = getState().getRocket;
-    // get the latest launch date since we have date till 2020
-
-    let tempDataResults = tempData;
-    dispatch(setLaunchStatus(status));
-
-    console.log(tempData);
-
-    console.log(status);
-    if (status === "All") {
-      if (date === "all") {
-        tempDataResults = rockets;
-      } else {
-        tempDataResults = tempData;
-      }
-    } else if (status === "Success") {
-      console.log("i am here");
-      tempDataResults = tempData.filter(
-        (rocket) => rocket.launch_success === true
-      );
-      console.log(tempDataResults);
-    } else if (status === "Failure") {
-      tempDataResults = tempData.filter(
-        (rocket) => rocket.launch_success === false
-      );
-    } else {
-      return 0;
-    }
-
-    dispatch(filterLaunchStatus(tempDataResults));
-  };
-}
-
-export function getUpcoming(upcoming) {
-  return async (dispatch, getState) => {
-    let { searchResults, date, setLaunchStatus, rockets } =
-      getState().getRocket;
-    let tempData;
-    dispatch(setUpcoming(upcoming));
-    if (upcoming === true) {
-      tempData = searchResults.filter((rocket) => rocket.upcoming === upcoming);
-    } else if (upcoming === false) {
-      if (date === "all" && setLaunchStatus === "All") {
-        tempData = rockets;
-      } else {
-        tempData = searchResults;
+      if (date === "last_week") {
+        tempProducts = tempProducts.filter(
+          (rocket) => moment(rocket.launch_date_local) >= lastweekDate
+        );
+      } else if (date === "last_month") {
+        tempProducts = tempProducts.filter(
+          (rocket) => moment(rocket.launch_date_local) >= lastMonth
+        );
+      } else if (date === "last_year") {
+        tempProducts = tempProducts.filter(
+          (rocket) => moment(rocket.launch_date_local) >= lastYear
+        );
       }
     }
-    dispatch(filterUpcoming(tempData));
+    if (launchStatus !== "all") {
+      if (launchStatus === "Success") {
+        tempProducts = tempProducts.filter(
+          (rocket) => rocket.launch_success === true
+        );
+      } else if (launchStatus === "Failure") {
+        tempProducts = tempProducts.filter(
+          (rocket) => rocket.launch_success === false
+        );
+      } else {
+        return 0;
+      }
+    }
+    if (upcoming !== false) {
+      tempProducts = tempProducts.filter((product) => product.upcoming);
+    }
+
+    dispatch(filterResults(tempProducts));
   };
 }

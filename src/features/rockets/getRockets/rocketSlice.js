@@ -5,11 +5,12 @@ const initialState = {
   error: false,
   rockets: [],
   searchResults: [],
-  date: "all",
   filteredResults: [],
-  setLaunchStatus: "All",
-  launchResults: [],
-  upcoming: false,
+  filters: {
+    date: "all",
+    launchStatus: "all",
+    upcoming: false,
+  },
 };
 const rocketSlice = createSlice({
   name: "rockets",
@@ -31,26 +32,11 @@ const rocketSlice = createSlice({
     searchRocketsList: (state, { payload }) => {
       state.searchResults = payload;
     },
-    setDateType: (state, { payload }) => {
-      state.date = payload;
-    },
-    filterRocketbyDate: (state, { payload }) => {
-      state.filteredResults = payload;
-      state.searchResults = payload;
+    setfilterType: (state, { payload }) => {
+      state.filters = payload;
     },
 
-    setLaunchStatus: (state, { payload }) => {
-      state.setLaunchStatus = payload;
-    },
-    filterLaunchStatus: (state, { payload }) => {
-      state.launchResults = payload;
-      state.searchResults = payload;
-    },
-
-    setUpcoming: (state, { payload }) => {
-      state.upcoming = payload;
-    },
-    filterUpcoming: (state, { payload }) => {
+    filterResults: (state, { payload }) => {
       state.searchResults = payload;
     },
   },
@@ -63,11 +49,8 @@ export const {
   setError,
   searchRocketsList,
   setDateType,
-  filterRocketbyDate,
-  setLaunchStatus,
-  filterLaunchStatus,
-  setUpcoming,
-  filterUpcoming,
+  setfilterType,
+  filterResults,
 } = rocketSlice.actions;
 
 // export the selector (".items" being same as in slices/index.js's "items: something")
