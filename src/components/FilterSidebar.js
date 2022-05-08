@@ -66,8 +66,10 @@ function FilterSidebar() {
     }
   };
   return (
-    <div className="bg-secondary h-100 mx-2">
-      <Form.Label aria-label="Default select example">Select Date</Form.Label>
+    <div className=" h-100 m-4 p-3 my-5 border border-secondary ">
+      <Form.Label aria-label="Default select example">
+        <h5>Select Date</h5>
+      </Form.Label>
       <Form.Select
         aria-label="Default select example"
         onChange={handleDateChange}
@@ -80,22 +82,27 @@ function FilterSidebar() {
         <option value="last_year">Last Year</option>
       </Form.Select>
 
-      <Form.Label>Select Launch Status</Form.Label>
-      {launchStatusData.map((status) => {
-        const { id, label, name, type, value } = status;
-        return (
-          <Form.Check
-            label={label}
-            name={name}
-            type={type}
-            id={id}
-            key={id}
-            value={value}
-            onClick={handleLaunchStatus}
-            defaultChecked={setLaunchStatus.includes(value) ? true : false}
-          />
-        );
-      })}
+      <div className="my-5">
+        {" "}
+        <Form.Label>
+          <h5>Select Launch Status</h5>
+        </Form.Label>
+        {launchStatusData.map((status) => {
+          const { id, label, name, type, value } = status;
+          return (
+            <Form.Check
+              label={label}
+              name={name}
+              type={type}
+              id={id}
+              key={id}
+              value={value}
+              onClick={handleLaunchStatus}
+              defaultChecked={setLaunchStatus.includes(value) ? true : false}
+            />
+          );
+        })}
+      </div>
 
       <Form.Check
         type="checkbox"

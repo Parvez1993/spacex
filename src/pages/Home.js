@@ -59,12 +59,12 @@ function Home() {
         <Loader />
       ) : (
         <Row>
-          <Col md={3} className="my-5">
+          <Col md={2} className="my-5">
             <FilterSidebar />
           </Col>
           <Col md={9}>
             <SearchBar rocketlist={rocketlist.rockets} />
-            <div className="d-flex flex-wrap gap-4">
+            <div className="d-flex flex-wrap gap-4 justify-content-around align-items-center">
               {currentPosts.map((item, keys) => {
                 return (
                   <Card style={{ width: "18rem" }} key={keys}>
