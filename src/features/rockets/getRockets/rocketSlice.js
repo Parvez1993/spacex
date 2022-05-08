@@ -5,7 +5,7 @@ const initialState = {
   error: false,
   rockets: [],
   searchResults: [],
-  launchStatus: "all",
+  date: "all",
 };
 const rocketSlice = createSlice({
   name: "rockets",
@@ -27,12 +27,24 @@ const rocketSlice = createSlice({
     searchRocketsList: (state, { payload }) => {
       state.searchResults = payload;
     },
+    setDateType: (state, { payload }) => {
+      state.date = payload;
+    },
+    filterRocketbyDate: (state, { payload }) => {
+      state.searchResults = payload;
+    },
   },
 });
 
 // export the actions
-export const { setLoading, setRockets, setError, searchRocketsList } =
-  rocketSlice.actions;
+export const {
+  setLoading,
+  setRockets,
+  setError,
+  searchRocketsList,
+  setDateType,
+  filterRocketbyDate,
+} = rocketSlice.actions;
 
 // export the selector (".items" being same as in slices/index.js's "items: something")
 

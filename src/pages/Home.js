@@ -7,6 +7,7 @@ import Loader from "../components/Loader";
 import Paginate from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import { fetchRockets } from "../features/rockets/getRockets/rocketActions";
+import notFound from "../images/NotFound.jpg";
 
 function Home() {
   const rocketlist = useSelector((state) => state.getRocket);
@@ -17,6 +18,7 @@ function Home() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchRockets());
+
     setPageLoading(false);
   }, [dispatch, fetchRockets]);
 
@@ -45,7 +47,9 @@ function Home() {
     setCurrentPage(currentPage + 1);
   };
 
-  console.log(loading, pageLoading);
+  let time = new Date();
+
+  console.log(time);
   return (
     <>
       {error ? (
@@ -54,7 +58,7 @@ function Home() {
         <Loader />
       ) : (
         <Row>
-          <Col md={3}>
+          <Col md={3} className="my-5">
             <FilterSidebar />
           </Col>
           <Col md={9}>
@@ -65,7 +69,14 @@ function Home() {
                   <Card style={{ width: "18rem" }} key={keys}>
                     <Card.Img
                       variant="top"
-                      src={item.links.mission_patch_small}
+                      className="thumbnail"
+                      width="auto"
+                      height="300px"
+                      src={
+                        item.links.mission_patch_small
+                          ? item.links.mission_patch_small
+                          : notFound
+                      }
                     />
                     <Card.Body>
                       <Card.Title className="bg-dark text-white p-2">
