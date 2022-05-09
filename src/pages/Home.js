@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Row, Button } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Error from "../components/Error";
 import FilterSidebar from "../components/FilterSidebar";
@@ -7,12 +7,11 @@ import Loader from "../components/Loader";
 import Paginate from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import { fetchRockets } from "../features/rockets/getRockets/rocketActions";
-import notFound from "../images/NotFound.jpg";
-import moment from "moment";
+import Rockets from "../components/Rockets";
 
 function Home() {
   const rocketlist = useSelector((state) => state.getRocket);
-  const { loading, error, searchResults, filteredResults } = rocketlist;
+  const { loading, error, searchResults } = rocketlist;
 
   //displaydata
 
@@ -21,12 +20,14 @@ function Home() {
     dispatch(fetchRockets());
 
     setPageLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, fetchRockets]);
 
   //pagnation
 
   const [pageLoading, setPageLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  // eslint-disable-next-line no-unused-vars
   const [postsPerPage, setPostsPerPage] = useState(8);
 
   //total posts = 100
@@ -56,7 +57,9 @@ function Home() {
       {error ? (
         <Error msg={error} />
       ) : loading || pageLoading ? (
-        <Loader />
+        <div data-testid="loading">
+          <Loader />
+        </div>
       ) : (
         <Row>
           <Col md={2} className="my-5">
@@ -67,68 +70,20 @@ function Home() {
             <div className="d-flex flex-wrap gap-4 justify-content-around align-items-center">
               {currentPosts.map((item, keys) => {
                 return (
-                  <Card style={{ width: "18rem" }} key={keys}>
-                    <Card.Img
-                      variant="top"
-                      className="thumbnail"
-                      width="auto"
-                      height="300px"
-                      src={
-                        item.links.mission_patch_small
-                          ? item.links.mission_patch_small
-                          : notFound
-                      }
-                    />
-                    <Card.Body>
-                      <Card.Title className="bg-dark text-white p-2">
-                        {item.rocket.rocket_name}
-                      </Card.Title>
-                      <div>
-                        <p className="fw-bolder">
-                          <span className="">Mission: {item.mission_name}</span>
-                        </p>
-                        <p className="fw-light">
-                          <span>
-                            {" "}
-                            Upcoming:
-                            {item.upcoming ? (
-                              <span> Yes</span>
-                            ) : (
-                              <span> No</span>
-                            )}
-                          </span>
-                        </p>
-                        <p>
-                          <span className="">
-                            Launch Year:{" "}
-                            {moment(item.launch_date_local).format("MMM Do YY")}
-                          </span>
-                        </p>
-                        <p>
-                          <span className="">
-                            Launch Status:{" "}
-                            {item.launch_success === null
-                              ? "Unknown"
-                              : item.launch_success
-                              ? "Success"
-                              : "Failure"}
-                          </span>
-                        </p>
-                      </div>
-                      <Button variant="primary">Get Details</Button>
-                    </Card.Body>
-                  </Card>
+                  <div key={keys} data-testid="list">
+                    <Rockets item={item} />
+                  </div>
                 );
               })}
+              <Paginate
+                postsPerPage={postsPerPage}
+                totalPosts={searchResults.length}
+                paginate={paginate}
+                nextPage={nextPage}
+                prevPage={prevPage}
+                currentPage={currentPage}
+              />
             </div>
-            <Paginate
-              postsPerPage={postsPerPage}
-              totalPosts={searchResults.length}
-              paginate={paginate}
-              nextPage={nextPage}
-              prevPage={prevPage}
-              currentPage={currentPage}
-            />
           </Col>
         </Row>
       )}

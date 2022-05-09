@@ -10,7 +10,8 @@ In the project directory, you can run:
 
 1. react-bootstrap bootstrap
 2. react-redux, @reduxjs/toolkit
-3. react-router-dom v6
+3. axios
+4. moment
 
 ### `How to run the code`
 

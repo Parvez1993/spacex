@@ -9,7 +9,7 @@ import {
 function FilterSidebar() {
   const dispatch = useDispatch();
   const rocketlist = useSelector((state) => state.getRocket);
-  const { filters, searchResults } = rocketlist;
+  const { filters } = rocketlist;
 
   const { upcoming } = filters;
 
@@ -20,6 +20,7 @@ function FilterSidebar() {
       dispatch(updateFilters());
       setRender(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [render]);
 
   //laucnh status types
@@ -54,7 +55,7 @@ function FilterSidebar() {
     setRender(true);
   };
   return (
-    <div className=" h-100 m-4 p-3 my-5 border border-secondary ">
+    <div className=" h-100 m-4 p-3 my-5 border border-light ">
       <Form.Label aria-label="Default select example">
         <h5>Select Date</h5>
       </Form.Label>

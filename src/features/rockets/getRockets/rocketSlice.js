@@ -53,7 +53,5 @@ export const {
   filterResults,
 } = rocketSlice.actions;
 
-// export the selector (".items" being same as in slices/index.js's "items: something")
-
 // export the default reducer
 export default rocketSlice.reducer;
